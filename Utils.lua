@@ -2,7 +2,7 @@
     ====================================
     |    Leaguebot Utility Library     |
     |          Version 1.3.6           |
-    |            			           |
+    |                                  |
     ====================================
  
         This library consolidates functions that are often repeated in scripts as well as including
