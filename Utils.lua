@@ -1,7 +1,7 @@
 --[[
     ====================================
     |    Leaguebot Utility Library     |
-    |          Version 2.0.7           |
+    |          Version 2.0.8           |
     |                                  |
     ====================================
 
@@ -111,6 +111,9 @@
           
     2.0.7 - 6/3/2013 9:56:28 PM
           - added IsScriptActive, fixing the problem knowingly introduced in 2.0.5 where callbacks still ran for disabled scripts
+
+    2.0.8 - 6/9/2013 5:58:59 PM
+          - deprecated Util__Ontick(), tick now called directly from dotimercallback in script_loader
 
     ====================================
     |               API                |
@@ -428,7 +431,7 @@ if myHero ~= nil then
 end
 
 mousePos = {x=0,y=0,z=0}
-function Util__OnTick()
+function Util__Callback()
     --printtext('~')
     SendTickToLibraries()
     HandleOnDraw()
@@ -440,6 +443,10 @@ function Util__OnTick()
     mousePos.x = GetCursorWorldX() -- faster
     mousePos.y = GetCursorWorldY()
     mousePos.z = GetCursorWorldZ()
+end
+
+function Util__OnTick()
+    -- deprecated to prevent double ticking
 end
 
 -- library callbacks, dont need draw --
@@ -530,7 +537,7 @@ function HandleOnWndMsg()
     while (msg ~= nil) do        
         table.insert(messages, {msg,key,param})
         msg,key,param=GetMessage()
-    end 
+    end
     SendMessagesToLibraries(messages)
     SendMessagesToFunction(messages, SC__OnWndMsg)
     for i,fn in ipairs(GetScriptFunctions('OnWndMsg')) do
@@ -1429,7 +1436,7 @@ function __SC__DrawInstance(header, selected)
     _SC.draw.y1 = _SC.draw.y1 + _SC.draw.cellSize
 end
 
-function SC__OnWndMsg(msg,key)
+function SC__OnWndMsg(msg,key)    
     if __SC__init() then return end
 
     local msg, key = msg, key
@@ -2078,8 +2085,8 @@ function GetLowestHealthEnemyMinion(range)
 end
 --################## END MINION MANAGER CLASS ##################--
 
-SetTimerCallback("Util__OnTick")    
-print('*** UTILS SetTimerCallback ***', GetScriptNumber())
+--SetTimerCallback("Util__OnTick")    
+--print('*** UTILS SetTimerCallback ***', GetScriptNumber())
 
 if SCRIPT_PATH == nil then SCRIPT_PATH = '' end
 
