@@ -1,7 +1,7 @@
 --[[
     ====================================
     |    Leaguebot Utility Library     |
-    |          Version 2.0.8           |
+    |          Version 2.0.9           |
     |                                  |
     ====================================
 
@@ -114,6 +114,9 @@
 
     2.0.8 - 6/9/2013 5:58:59 PM
           - deprecated Util__Ontick(), tick now called directly from dotimercallback in script_loader
+          
+    2.0.9 - 6/10/2013 9:18:42 AM
+          - revert the change in 2.0.8 for calling tick directly from dotimercallback, cannot support LOADSCRIPT
 
     ====================================
     |               API                |
@@ -2085,8 +2088,8 @@ function GetLowestHealthEnemyMinion(range)
 end
 --################## END MINION MANAGER CLASS ##################--
 
---SetTimerCallback("Util__OnTick")    
---print('*** UTILS SetTimerCallback ***', GetScriptNumber())
+SetTimerCallback("Util__Callback")    
+print('*** UTILS SetTimerCallback ***', GetScriptNumber())
 
 if SCRIPT_PATH == nil then SCRIPT_PATH = '' end
 
